@@ -5,8 +5,6 @@ import SearchBar from '../components/SearchBar'
 const Main = () => {
   return (
     <div>
-      <Baner></Baner>
-      <SearchBar></SearchBar>
     </div>
   )
 }
