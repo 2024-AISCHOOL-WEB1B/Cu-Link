@@ -1,10 +1,9 @@
 import "./App.css";
-import Baner from "./components/Baner";
-
+import Main from "./page/Main";
 function App() {
   return (
     <div>
-      <Baner />
+      <Main />
     </div>
   );
 }
