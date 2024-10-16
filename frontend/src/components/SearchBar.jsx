@@ -5,7 +5,6 @@ const SearchBar = () => {
   const [conditions, setConditions] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [showTooltip, setShowTooltip] = useState(false);
 
   const handleKeywordChange = (e) => setKeyword(e.target.value);
   const handleConditionChange = (index, e) => {
@@ -15,9 +14,9 @@ const SearchBar = () => {
   };
   const handleStartDateChange = (e) => setStartDate(e.target.value);
   const handleEndDateChange = (e) => setEndDate(e.target.value);
-  const handleAddCondition = (type) => {
+  const handleAddCondition = () => {
     if (conditions.length < 4) {
-      setConditions([...conditions, { type, value: '' }]);
+      setConditions([...conditions, { type: 'AND', value: '' }]);
     }
   };
   const handleSearch = () => {
@@ -47,30 +46,17 @@ const SearchBar = () => {
             />
           </div>
         ))}
-        <div className="and-or-buttons">
-          <button onClick={() => handleAddCondition('AND')} className="and-or-button">
-            AND +
+        <div className="add-condition-button">
+          <button onClick={handleAddCondition} className="and-or-button">
+            +
           </button>
-          <button onClick={() => handleAddCondition('OR')} className="and-or-button">
-            OR +
-          </button>
-          <div 
-            className="help-button" 
-            onMouseEnter={() => setShowTooltip(true)} 
-            onMouseLeave={() => setShowTooltip(false)}
-          >
-            ?
-            {showTooltip && (
-              <div className="tooltip">
-                AND 또는 OR을 추가하여 여러 키워드를 조합할 수 있습니다.
-              </div>
-            )}
-          </div>
         </div>
       </div>
-      
+
       <div className="separator"></div>
-      <p>기간</p>
+
+      
+      <p className="time-title">기간</p>
       <div className="date-range">
         <input
           type="date"
@@ -92,7 +78,7 @@ const SearchBar = () => {
       <div className="separator"></div>
 
       <button className="search-submit" onClick={handleSearch}>
-        기사 찾기
+        기사 찾기 ➨
       </button>
     </div>
   );
