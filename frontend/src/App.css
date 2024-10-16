@@ -27,21 +27,44 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 300px; /* 검색 바의 최대 너비 */
+  max-width: 300px;
   padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  align-items: flex-start; /* 검색 바를 왼쪽에 고정 */
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+  /* border-radius: 8px; */
+  background-color: white;
+  align-items: flex-start;
+  height: calc(100vh - 140px); /* 상단 배너(100px)를 제외한 화면 높이 */
 }
 
-.search-buttons,
-.date-range {
-  width: 100%; /* 내부 요소가 가로 100%를 차지하도록 */
+.keyword-inputs {
+  flex-grow: 1; /* 키워드 입력 필드가 가능한 공간을 차지하도록 설정 */
   display: flex;
   flex-direction: column;
-  align-items: center; /* 내부 요소들 가운데 정렬 */
+  justify-content: flex-start; /* 입력 필드를 위에서 아래로 정렬 */
+}
+
+.separator {
+  width: 100%;
+  height: 1px;
+  background-color: #51017F;
+  margin: 16px 0;
+}
+
+.search-buttons {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-bottom: 16px;
+}
+
+.date-range {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
 .search-input,
@@ -50,7 +73,7 @@
   max-width: 300px;
   padding: 10px;
   margin-bottom: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #51017F;
   border-radius: 20px;
   font-size: 14px;
   text-align: center; /* 입력창 내부 텍스트 가운데 정렬 */
@@ -69,38 +92,67 @@
   gap: 10px;
   justify-content: center; /* 버튼 가운데 정렬 */
   width: 100%; /* 버튼들이 부모 요소의 가로폭을 차지하도록 */
+  margin-bottom: 16px; /* AND/OR와 날짜 입력 사이의 여백 */
 }
 
 .and-or-button {
   width: 40%; /* 버튼 가로폭을 조정 */
   padding: 8px 12px;
-  background-color: #4a90e2;
-  color: #fff;
+  background-color: white;
+  color: black;
   border: none;
-  border-radius: 4px;
+  border-radius: px;
   cursor: pointer;
   font-size: 14px;
 }
-
+/* 
 .and-or-button:hover {
-  background-color: #357ABD;
-}
+  background-color: whitesmoke;
+} */
 
+/* ? 버튼 수정 */
 .help-button {
-  position: relative;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: white;
+  color: black;
   cursor: pointer;
+  font-size: 18px;
+  position: relative;
 }
+/* 
+.help-button:hover {
+  background-color: whitesmoke;
+} */
 
+/* 툴팁 위치 조정 */
 .tooltip {
   position: absolute;
+  top: 50%;
+  left: 120%; /* 툴팁을 버튼의 오른쪽으로 이동 */
+  transform: translateY(-50%); /* 수직 중앙 정렬 */
   background-color: #fff;
   border: 1px solid #ccc;
   padding: 8px;
   border-radius: 4px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  z-index: 10;
-  margin-top: 5px;
+  z-index: 1000; /* 다른 요소들 위로 오도록 z-index 증가 */
+  white-space: nowrap; /* 글씨가 길어지면 줄바꿈 없이 한 줄로 유지 */
   font-size: 12px;
+  color: #333; /* 툴팁 텍스트 색상 설정 */
+  display: block;
+  visibility: hidden; /* 기본값: 숨김 */
+  opacity: 0; /* 기본값: 불투명도 0 */
+  transition: opacity 0.2s ease-in-out; /* 부드러운 나타남 효과 */
+}
+
+.help-button:hover .tooltip {
+  visibility: visible; /* 호버 시 보이도록 */
+  opacity: 1; /* 호버 시 불투명도 1로 */
 }
 
 .date-range {
@@ -115,7 +167,7 @@
   max-width: 200px; /* 날짜 필드의 최대 너비 제한 */
   padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 5px;
   font-size: 14px;
   text-align: center; /* 날짜 입력 텍스트도 가운데 정렬 */
 }
@@ -124,7 +176,7 @@
   width: 80%; /* 버튼을 전체 가로폭으로 맞춤 */
   max-width: 300px; /* 버튼의 최대 너비 제한 */
   padding: 10px 15px;
-  background-color: #28a745;
+  background-color: #51017F;
   color: #fff;
   border: none;
   border-radius: 20px;
@@ -135,7 +187,8 @@
 }
 
 .search-submit:hover {
-  background-color: #218838;
+  background-color: #5d3474;
 }
+
 
   /* SearchBar 적용 끝 */

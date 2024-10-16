@@ -1,30 +1,25 @@
 import React, { useState } from 'react';
-// import './SearchBar.css'; // CSS 파일을 따로 생성하여 스타일을 추가하세요.
 
 const SearchBar = () => {
   const [keyword, setKeyword] = useState('');
   const [conditions, setConditions] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [showTooltip, setShowTooltip] = useState(false); // 툴팁 상태 관리
+  const [showTooltip, setShowTooltip] = useState(false);
 
   const handleKeywordChange = (e) => setKeyword(e.target.value);
-
   const handleConditionChange = (index, e) => {
     const newConditions = [...conditions];
     newConditions[index].value = e.target.value;
     setConditions(newConditions);
   };
-
   const handleStartDateChange = (e) => setStartDate(e.target.value);
   const handleEndDateChange = (e) => setEndDate(e.target.value);
-
   const handleAddCondition = (type) => {
-    if (conditions.length < 4) { // 최대 5개까지만 추가
+    if (conditions.length < 4) {
       setConditions([...conditions, { type, value: '' }]);
     }
   };
-
   const handleSearch = () => {
     console.log("Searching with:", { keyword, conditions, startDate, endDate });
   };
@@ -41,7 +36,6 @@ const SearchBar = () => {
           onChange={handleKeywordChange}
           className="search-input"
         />
-        
         {conditions.map((condition, index) => (
           <div key={index} className="condition-input">
             <input
@@ -53,7 +47,6 @@ const SearchBar = () => {
             />
           </div>
         ))}
-
         <div className="and-or-buttons">
           <button onClick={() => handleAddCondition('AND')} className="and-or-button">
             AND +
@@ -75,6 +68,8 @@ const SearchBar = () => {
           </div>
         </div>
       </div>
+      
+      <div className="separator"></div>
 
       <div className="date-range">
         <input
@@ -93,6 +88,8 @@ const SearchBar = () => {
           className="date-input"
         />
       </div>
+
+      <div className="separator"></div>
 
       <button className="search-submit" onClick={handleSearch}>
         기사 찾기
