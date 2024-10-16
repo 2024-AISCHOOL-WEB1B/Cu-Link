@@ -166,7 +166,7 @@
   width: 100%; /* 날짜 입력 필드도 가로를 꽉 채움 */
   max-width: 200px; /* 날짜 필드의 최대 너비 제한 */
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #51017F;
   border-radius: 5px;
   font-size: 14px;
   text-align: center; /* 날짜 입력 텍스트도 가운데 정렬 */

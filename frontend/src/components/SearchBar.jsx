@@ -70,7 +70,7 @@ const SearchBar = () => {
       </div>
       
       <div className="separator"></div>
-
+      <p>기간</p>
       <div className="date-range">
         <input
           type="date"
