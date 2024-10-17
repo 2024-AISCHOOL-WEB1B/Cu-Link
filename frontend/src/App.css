@@ -22,17 +22,19 @@
   gap: 5px;
 }
 
-/* SearchBar CSS 적용 */
+/* SearchBar CSS 수정 */
 .search-bar {
-display: flex;
-flex-direction: column;
-max-width: calc(100% - 12.25rem);;
-padding: 1.25rem;
-background-color: white;
-align-items: center;
-height: calc(100vh - 8rem);
-margin-left: 12.25rem;
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 12.25rem);
+  max-width: 16.375rem;
+  padding: 1.25rem;
+  background-color: white;
+  align-items: center;
+  height: calc(100vh - 8rem);
+  margin-left: 12.25rem;
 }
+
 
 .keyword-inputs {
   flex-grow: 1;
