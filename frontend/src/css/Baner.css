@@ -1,0 +1,24 @@
+.banner {
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 90px;
+  }
+  .left-item {
+    display: flex;
+    flex-direction: column;
+  }
+  .left-item h1 {
+    margin-bottom: -15px;
+  }
+  .mid-item {
+    display: flex;
+    align-items: center;
+    gap: 70px;
+  }
+  .right-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  

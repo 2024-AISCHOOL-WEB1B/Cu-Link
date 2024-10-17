@@ -1,4 +1,6 @@
 import React from 'react'
+import '../css/Baner.css';
+
 
 function Baner() {
   return (
