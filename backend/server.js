@@ -1,8 +1,12 @@
 const express = require('express');
 const mainRouter = require('./routes/mainRouter'); // 메인 라우터 불러오기
+const cors = require('cors');
+
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+app.use(cors());
 
 // 미들웨어 설정
 app.use(express.json());
@@ -14,3 +18,5 @@ app.use('/', mainRouter);
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+
+
