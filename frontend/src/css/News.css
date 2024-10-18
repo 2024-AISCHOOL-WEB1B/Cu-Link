@@ -1,12 +1,14 @@
 /* 뉴스 컨테이너: 전체 기사 리스트를 감싸는 컨테이너 */
 .news-container {
     box-sizing: border-box;
+    padding: 0 10px; /* 좌우 여백을 줄임 */
+    max-width: 1200px; /* 최대 너비 설정 */
 }
 
 /* 기사 리스트 */
 .articles {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3개의 동일한 너비 열 */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 반응형 그리드 */
     gap: 20px; /* 카드 사이의 간격 */
 }
 
@@ -16,13 +18,14 @@
     flex-direction: column;
     justify-content: space-between;
     border: 1px solid #ccc;
-    padding: 10px;
-    height: 350px; /* 고정된 높이 설정 */
+    height: 21rem; /* 고정된 높이 설정 */
     box-sizing: border-box;
     cursor: pointer;
     transition: transform 0.3s ease;
     position: relative; /* 체크박스 위치를 위한 relative 설정 */
     overflow: hidden; /* 내용이 넘치지 않도록 처리 */
+    border-radius: 1.5rem;
+    width: 100%; /* 반응형 너비 */
 }
 
 .article:hover {
@@ -32,38 +35,46 @@
 /* 기사 상단 (제목, 날짜 등) */
 .article-header {
     margin-bottom: 10px;
+    position: relative; /* 체크박스 위치를 조정하기 위한 relative 설정 */
+    padding-left: 35px; /* 체크박스가 제목을 가리지 않도록 패딩 추가 */
 }
 
 .article-header h3 {
     font-size: 1rem; /* 제목 크기 조정 */
     margin: 0;
-    padding: 0;
+    padding-right: 1rem;
+    padding-top: 0.5rem;
     color: #333;
+    z-index: 1; /* 체크박스보다 위에 표시되도록 */
 }
 
 .article-header p {
     font-size: 0.8rem; /* 날짜 크기 조정 */
     color: #888;
+    margin-bottom: 0;
 }
 
 /* 기사 본문 */
 .article-body {
     flex: 1;
+    padding : 0.5rem;
+    padding-top: 0;
     margin-bottom: 10px;
     font-size: 0.9rem;
     color: #333;
     overflow: hidden; /* 너무 긴 내용은 숨김 */
     text-overflow: ellipsis; /* 긴 텍스트는 ... 표시 */
-    max-height: 3.6em; /* 텍스트의 최대 높이를 3줄로 제한 */
+    max-height: 4em; /* 텍스트의 최대 높이를 3줄로 제한 */
     line-height: 1.2em;
 }
 
 /* 기사 이미지 (사각형 하단 절반을 채움) */
 .article-image img {
     width: 100%;
-    height: 150px; /* 이미지 고정 크기 */
+    height: calc(50%); /* 사각형 하단 절반 채우기 */
     object-fit: cover; /* 이미지가 사각형 하단을 가득 채우도록 조정 */
-    border-radius: 5px; /* 이미지의 모서리를 약간 둥글게 */
+    border-radius: 0 0 1.5rem 1.5rem; /* 이미지의 하단 모서리를 둥글게 */
+    padding: 0; /* 이미지의 좌우 여백 제거 */
 }
 
 /* 선택된 기사의 체크박스 (좌측 상단에 위치) */
@@ -71,6 +82,7 @@
     position: absolute;
     top: 10px;
     left: 10px;
+    z-index: 2; /* 체크박스가 다른 요소 위에 표시되도록 */
 }
 
 /* 페이지네이션 */
