@@ -1,31 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 import '../css/News.css'; // 필요한 CSS 파일 import
 
-const News = () => {
-  const [newsData, setNewsData] = useState([]);
+const News = ({ articles }) => {
   const [selectedArticles, setSelectedArticles] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const articlesPerPage = 6;
   const pageRange = 5; // 페이지 네이션에서 보여줄 페이지 수
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/'); // 백엔드에서 데이터를 GET 요청
-        setNewsData(response.data); // 데이터 저장
-      } catch (error) {
-        console.error('데이터를 가져오는데 실패했습니다:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
   // 현재 페이지에 맞는 기사를 반환하는 함수
   const indexOfLastArticle = currentPage * articlesPerPage;
   const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
-  const currentArticles = newsData.slice(indexOfFirstArticle, indexOfLastArticle);
+  const currentArticles = articles.slice(indexOfFirstArticle, indexOfLastArticle);
 
   // 체크박스 변경 핸들러
   const handleCheckboxChange = (article) => {
@@ -49,7 +34,7 @@ const News = () => {
   const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
 
   // 현재 페이지 범위에서 보여줄 페이지네이션 버튼 생성
-  const totalPages = Math.ceil(newsData.length / articlesPerPage);
+  const totalPages = Math.ceil(articles.length / articlesPerPage);
   const startPage = Math.floor((currentPage - 1) / pageRange) * pageRange + 1;
   const endPage = Math.min(startPage + pageRange - 1, totalPages);
 
@@ -57,7 +42,7 @@ const News = () => {
     <div className="news-container">
       <div className="select-all">
         <button onClick={handleSelectAll}>전체선택</button>
-        <span>{`선택된 기사 ${selectedArticles.length}개 / 총 ${newsData.length}개`}</span>
+        <span>{`선택된 기사 ${selectedArticles.length}개 / 총 ${articles.length}개`}</span>
       </div>
       <div className="articles">
         {currentArticles.map((news) => (
