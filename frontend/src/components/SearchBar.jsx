@@ -25,48 +25,46 @@ const SearchBar = ({ articles, setFilteredArticles }) => {
     setCheckedConditions(newCheckedConditions);
   };
 
-  // 필터링 로직
-  const filterArticles = () => {
-    let filtered = articles;
+ // 필터링 로직
+const filterArticles = () => {
+  let filtered = articles;
 
-    // 키워드 필터링 (본문에서만 검색)
-    if (keyword) {
+  // AND 조건 필터링
+  conditions.forEach((condition, index) => {
+    if (checkedConditions[index]) { // AND 조건일 때
       filtered = filtered.filter(article =>
-        article.art_content.toLowerCase().includes(keyword.toLowerCase())
+        article.art_content.toLowerCase().includes(condition.toLowerCase())
       );
     }
+  });
 
-    // AND 조건 필터링
-    conditions.forEach((condition, index) => {
-      if (checkedConditions[index]) { // AND 조건일 때
-        filtered = filtered.filter(article =>
-          article.art_content.toLowerCase().includes(condition.toLowerCase())
-        );
-      }
+  // OR 조건 필터링 (키워드 포함)
+  const orConditions = conditions.filter((_, index) => !checkedConditions[index]);
+
+  // 키워드를 조건에 추가하여 OR 필터링
+  if (keyword) {
+    orConditions.push(keyword);
+  }
+
+  if (orConditions.length > 0) {
+    filtered = filtered.filter(article =>
+      orConditions.some(condition =>
+        article.art_content.toLowerCase().includes(condition.toLowerCase())
+      )
+    );
+  }
+
+  // 날짜 필터링
+  if (startDate && endDate) {
+    filtered = filtered.filter(article => {
+      const articleDate = new Date(article.art_date);
+      return articleDate >= new Date(startDate) && articleDate <= new Date(endDate);
     });
+  }
 
-    // OR 조건 필터링
-    const orConditions = conditions.filter((_, index) => !checkedConditions[index]);
-    if (orConditions.length > 0) {
-      filtered = filtered.filter(article =>
-        orConditions.some(condition =>
-          article.art_content.toLowerCase().includes(condition.toLowerCase())
-        )
-      );
-    }
-
-    // 날짜 필터링
-    if (startDate && endDate) {
-      filtered = filtered.filter(article => {
-        const articleDate = new Date(article.art_date);
-        return articleDate >= new Date(startDate) && articleDate <= new Date(endDate);
-      });
-    }
-
-    // 필터링된 결과를 App.js로 전달
-    setFilteredArticles(filtered);
-  };
-
+  // 필터링된 결과를 App.js로 전달
+  setFilteredArticles(filtered);
+};
   // 검색 버튼 클릭 시 필터링 실행
   const handleSearch = () => {
     filterArticles();
