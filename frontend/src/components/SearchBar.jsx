@@ -4,6 +4,7 @@ import '../css/SearchBar.css';
 const SearchBar = ({ articles, setFilteredArticles }) => {
   // 상태 관리 부분: 키워드, 조건, 체크박스, 날짜 범위 설정
   const [keyword, setKeyword] = useState('');
+  const [isKeywordChecked, setIsKeywordChecked] = useState(false); // 첫 번째 키워드 체크박스 상태 추가
   const [conditions, setConditions] = useState([]);
   const [checkedConditions, setCheckedConditions] = useState([]); // AND/OR 구분
   const [startDate, setStartDate] = useState('');
@@ -25,46 +26,57 @@ const SearchBar = ({ articles, setFilteredArticles }) => {
     setCheckedConditions(newCheckedConditions);
   };
 
- // 필터링 로직
-const filterArticles = () => {
-  let filtered = articles;
+  // 필터링 로직
+  const filterArticles = () => {
+    let filtered = articles;
 
-  // AND 조건 필터링
-  conditions.forEach((condition, index) => {
-    if (checkedConditions[index]) { // AND 조건일 때
+    // 첫 번째 키워드 필터링 (AND/OR 구분)
+    if (keyword) {
+      if (isKeywordChecked) {
+        // 첫 번째 키워드가 체크된 경우: AND 조건
+        filtered = filtered.filter(article =>
+          article.art_content.toLowerCase().includes(keyword.toLowerCase())
+        );
+      } else {
+        // 첫 번째 키워드가 체크되지 않은 경우: OR 조건
+        filtered = filtered.filter(article =>
+          article.art_content.toLowerCase().includes(keyword.toLowerCase())
+        );
+      }
+    }
+
+    // AND 조건 필터링
+    conditions.forEach((condition, index) => {
+      if (checkedConditions[index]) { // AND 조건일 때
+        filtered = filtered.filter(article =>
+          article.art_content.toLowerCase().includes(condition.toLowerCase())
+        );
+      }
+    });
+
+    // OR 조건 필터링 (키워드 포함)
+    const orConditions = conditions.filter((_, index) => !checkedConditions[index]);
+
+    if (orConditions.length > 0) {
       filtered = filtered.filter(article =>
-        article.art_content.toLowerCase().includes(condition.toLowerCase())
+        orConditions.some(condition =>
+          article.art_content.toLowerCase().includes(condition.toLowerCase())
+        )
       );
     }
-  });
 
-  // OR 조건 필터링 (키워드 포함)
-  const orConditions = conditions.filter((_, index) => !checkedConditions[index]);
+    // 날짜 필터링
+    if (startDate && endDate) {
+      filtered = filtered.filter(article => {
+        const articleDate = new Date(article.art_date);
+        return articleDate >= new Date(startDate) && articleDate <= new Date(endDate);
+      });
+    }
 
-  // 키워드를 조건에 추가하여 OR 필터링
-  if (keyword) {
-    orConditions.push(keyword);
-  }
+    // 필터링된 결과를 App.js로 전달
+    setFilteredArticles(filtered);
+  };
 
-  if (orConditions.length > 0) {
-    filtered = filtered.filter(article =>
-      orConditions.some(condition =>
-        article.art_content.toLowerCase().includes(condition.toLowerCase())
-      )
-    );
-  }
-
-  // 날짜 필터링
-  if (startDate && endDate) {
-    filtered = filtered.filter(article => {
-      const articleDate = new Date(article.art_date);
-      return articleDate >= new Date(startDate) && articleDate <= new Date(endDate);
-    });
-  }
-
-  // 필터링된 결과를 App.js로 전달
-  setFilteredArticles(filtered);
-};
   // 검색 버튼 클릭 시 필터링 실행
   const handleSearch = () => {
     filterArticles();
@@ -74,45 +86,53 @@ const filterArticles = () => {
 
   return (
     <div className="search-bar">
-      {/* 키워드와 조건 UI */}
-      <div className="keyword-inputs">
-        <div className="condition-input">
+      {/* 첫 번째 키워드와 체크박스 UI */}
+      <div className="condition-input">
+        <input
+          type="checkbox"
+          checked={isKeywordChecked}
+          onChange={() => setIsKeywordChecked(!isKeywordChecked)}
+          className="condition-checkbox"
+        />
+        <input
+          type="text"
+          placeholder="키워드를 입력해주세요"
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+          className="search-input keyword-first"
+        />
+      </div>
+
+      {/* 추가 키워드 UI */}
+      {conditions.map((condition, index) => (
+        <div key={index} className="condition-input condition-animated">
+          <input
+            type="checkbox"
+            checked={checkedConditions[index] || false}
+            onChange={() => {
+              const newChecked = [...checkedConditions];
+              newChecked[index] = !newChecked[index];
+              setCheckedConditions(newChecked);
+            }}
+            className="condition-checkbox"
+          />
           <input
             type="text"
             placeholder="키워드를 입력해주세요"
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
-            className="search-input keyword-first"
+            value={condition}
+            onChange={(e) => {
+              const newConditions = [...conditions];
+              newConditions[index] = e.target.value;
+              setConditions(newConditions);
+            }}
+            className="search-input"
           />
+          <button onClick={() => handleDeleteCondition(index)} className="delete-condition-button">X</button>
         </div>
-        {conditions.map((condition, index) => (
-          <div key={index} className="condition-input condition-animated">
-            <input
-              type="checkbox"
-              checked={checkedConditions[index] || false}
-              onChange={() => {
-                const newChecked = [...checkedConditions];
-                newChecked[index] = !newChecked[index];
-                setCheckedConditions(newChecked);
-              }}
-              className="condition-checkbox"
-            />
-            <input
-              type="text"
-              placeholder="키워드를 입력해주세요"
-              value={condition}
-              onChange={(e) => {
-                const newConditions = [...conditions];
-                newConditions[index] = e.target.value;
-                setConditions(newConditions);
-              }}
-              className="search-input"
-            />
-            <button onClick={() => handleDeleteCondition(index)} className="delete-condition-button">X</button>
-          </div>
-        ))}
-        <button onClick={handleAddCondition} className="add-condition-button">+</button>
-      </div>
+      ))}
+
+      {/* 키워드 추가 버튼 */}
+      <button onClick={handleAddCondition} className="add-condition-button">+</button>
 
       <div className="separator"></div>
       <p className="time-title">기간</p>
