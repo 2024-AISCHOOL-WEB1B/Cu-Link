@@ -10,13 +10,18 @@ function App() {
   return (
     <div>
       <Baner />
-      <SearchBar />
-      <News />
+      <div className="app-container">
+        <div className="search-bar-container">
+          <SearchBar />
+        </div>
+        <div className="news-container">
+          <News />
+        </div>
+      </div>
       <Modal />
       <Routes>
-        <Route path="/" element={<Main></Main>}></Route>
+        <Route path="/" element={<Main />}></Route>
       </Routes>
-      <Main />
     </div>
   );
 }
